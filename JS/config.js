@@ -1,0 +1,1 @@
+export const mod_path = '/JS/modules/ics.js';
