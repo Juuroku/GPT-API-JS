@@ -24,6 +24,34 @@ body, .txt {
 	margin: 0 auto;
 }
 
+.input-area {
+	padding: 0.5rem;
+	flex-shrink: 0;
+}
+.input-area > * {
+	margin: 0.2rem;
+}
+
+.input-group {
+	margin: 0;
+	height: fit-content;
+	overflow: hidden;
+}
+
+.input-group.flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+label {
+	margin-right: 0.2rem;
+}
+
+.mods-label {
+	flex-basis: auto;
+}
+
 .mods {
 	width: auto;
 	text-transform: uppercase;
@@ -33,6 +61,8 @@ body, .txt {
 	border: 0.15rem solid lightblue;
 	background: lightblue;
 	color: #333333;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .mods:focus {
 	border: 0.15rem solid SteelBlue;
@@ -47,17 +77,20 @@ body, .txt {
 	color: white;
 }
 
-.right {
-	float: right;
+.middle {
+	margin-right: 0.2rem;
+	flex-basis: auto;
+	flex-shrink: 2;
+	flex-grow: 2;
 }
 
-.input-area {
-	padding: 0.5rem;
-	flex-shrink: 0;
+.right {
+	float: right;
+	display: inline-block;
+	flex-basis: auto;
 }
-.input-area > * {
-	margin: 0.2rem;
-}
+
+
 
 .msg-label {
 	display: block;

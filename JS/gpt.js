@@ -29,6 +29,7 @@ const app = createApp({
 	},
 	methods: {
 		changeMod: function() {
+			this.msgEn();
 			let sel = document.getElementById('mods').value;
 			if (!sel || sel == '') {
 				alert('No module selected!');
@@ -59,6 +60,7 @@ const app = createApp({
 				if (mod.temperature) obj.temperature = mod.temperature;
 				
 				this.$data.obj = obj;
+				this.msgEn();
 			} else {
 				alert('Can\'t find the module!');
 				return;
@@ -143,6 +145,17 @@ const app = createApp({
 			yes.disabled = undefined;
 			mod_btn.disabled = null;
 			this.$refs.mods.disabled = null;
+		},
+		msgDis: function() {
+			let txar = document.getElementById('user-input');
+			txar.disabled = true;
+			yes.disabled = 'disabled';
+		},
+		msgEn: function() {
+			let txar = document.getElementById('user-input');
+			txar.disabled = null;
+			txar.focus();
+			yes.disabled = undefined;
 		},
 		add_input: function() {
 			
