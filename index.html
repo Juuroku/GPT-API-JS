@@ -9,9 +9,15 @@
 <body>
 	<div id="main">
 		<div class="input-area">
+			<label for="mods" class="mods-label">Mods:</label>
+			<select id="mods" class="mods" ref="mods">
+				<option class="mods-opt" value="">Select a Module</option>
+				<option class="mods-opt" v-for="(idx, key) in mods" :value="key">{{ key }}</option>
+			</select>
+			<button type="button" class="btn txt right" id="mod_btn" @click="changeMod">Confirm</button>
 			<label for="user-input" class="msg-label">User Input:</label>
 			<textarea id="user-input" class="msg" @keydown.enter.exact.prevent="gpt_api($event)" @keydown.enter.shift.exact="" ></textarea>
-			<button type="button" id="yes" @click="gpt_api($event)" class="btn">Submit</button>
+			<button type="button" id="yes" @click="gpt_api($event)" class="btn txt">Submit</button>
 		</div>
 		<div id="result" class="container">
 			<div v-for="item in comments">

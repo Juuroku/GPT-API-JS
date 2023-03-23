@@ -4,10 +4,7 @@ let mods = {};
 for (const key in mod_paths) {
 	mods[key] = await import(mod_paths[key]);
 }
-//const mods = (mod_path !== undefined) && await import(mod_path);
 const { createApp } = Vue;
-
-//console.log(mod);
 
 let api_url = 'https://api.openai.com/v1/chat/completions';
 let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + key};
@@ -17,17 +14,10 @@ let obj = {
 	"temperature": 0.5,
 }
 
-/*
-if (mod.system) obj.messages.push(mod.system);
-if (mod.logit_bias) obj.logit_bias = mod.logit_bias;
-if (mod.frequency_penalty) obj.frequency_penalty = mod.frequency_penalty;
-if (mod.presence_penalty) obj.presence_penalty = mod.presence_penalty;
-if (mod.temperature) obj.temperature = mod.temperature;
-*/
 
 const reg = new RegExp('^\n');
 
-createApp({
+const app = createApp({
 	data() {
 		return {
 			obj: obj,
@@ -40,11 +30,17 @@ createApp({
 	methods: {
 		changeMod: function() {
 			let sel = document.getElementById('mods').value;
+			if (!sel || sel == '') {
+				alert('No module selected!');
+				return;
+			}
 			this.$data.history.push(this.$data.obj.messages);
 			this.$data.comments = [];
 			
 			console.log(sel);
 			console.log(this.$data.mods);
+			
+			// read the mod config
 			if (this.$data.mods[sel]) {
 				let obj = {
 					"model": "gpt-3.5-turbo",
@@ -63,24 +59,25 @@ createApp({
 				if (mod.temperature) obj.temperature = mod.temperature;
 				
 				this.$data.obj = obj;
+			} else {
+				alert('Can\'t find the module!');
+				return;
 			}
 			console.log(this.$data.obj);
+			alert(`The module is set to ${sel.toUpperCase()}!`);
 		},
 		gpt_api: function(e) {
 			if (!this.$data.mod) {
 				alert('Select Mod!');
 			} else {
+				this.allDis();
 				e.preventDefault();
 				e.target.blur();
 				let txar = document.getElementById('user-input');
 				let string = txar.value;
-				txar.disabled = true;
-				yes.disabled = 'disabled';
 				if (string === undefined || /^\s*$/.test(string)) {
 					alert('No input!');
-					yes.disabled = undefined;
-					txar.disabled = null;
-					txar.focus();
+					this.allEn();
 				} else {
 					this.$data.obj.messages.push({ "role": "user", "content": string});
 					console.log(this.$data.obj);
@@ -94,23 +91,19 @@ createApp({
 							if (res.ok) {
 								res.json().then((data) => {
 									console.log(data);
-									//if (!reg.test(data.choices[0].message.content)) result.innerHTML += '<br/>';
-									//result.innerHTML += data.choices[0].message.content.replaceAll("\n", "<br/>");
+									// parse the response and put into result div
 									let l = this.$data.obj.messages.length;
 									this.$data.obj.messages.push(data.choices[0].message);
 									this.$data.comments.push(this.$data.obj.messages[l-1]);
 									this.$data.comments.push(this.$data.obj.messages[l]);
 									alert('OK');
 									txar.value = "";
-									txar.disabled = null;
-									txar.focus();
+									this.allEn();
 									yes.disabled = undefined;
 								})
 								.catch((e) => {
-									alert('JSON parse error');								
-									txar.disabled = null;
-									txar.focus();
-									yes.disabled = undefined;
+									alert('JSON parse error');
+									this.allEn();
 									this.$data.obj.messages.pop();
 								});
 							} else {
@@ -118,33 +111,53 @@ createApp({
 								if (res.statusText) {
 									alert(`Status: ${res.status} - ${res.statusText}`)
 								} else {
-									alert ('No1');
+									alert ('Error');
 								}
-								txar.disabled = null;
-								txar.focus();
-								yes.disabled = undefined;
+								this.allEn();
 								this.$data.obj.messages.pop();
 							}
 						})
 						.catch((e) => {
 							console.log(e.message);
-							alert('No');
-							txar.disabled = null;
-							txar.focus();
-							yes.disabled = undefined;
+							alert('Error');
+							this.allEn();
 							this.$data.obj.messages.pop();
 						});
 				}
 			}
 			
 		},
+		allDis: function() {
+			console.log('dis');
+			let txar = document.getElementById('user-input');
+			mod_btn.disabled = true;
+			txar.disabled = true;
+			yes.disabled = 'disabled';
+			this.$refs.mods.disabled = 'disabled';
+		},
+		allEn: function() {
+			console.log('en');
+			let txar = document.getElementById('user-input');
+			txar.disabled = null;
+			txar.focus();
+			yes.disabled = undefined;
+			mod_btn.disabled = null;
+			this.$refs.mods.disabled = null;
+		},
 		add_input: function() {
 			
 		}
 	},
 	mounted: function() {
-		// for style test
-		//this.$data.comments.push({"role": "user", "content": "Hello"});
-		document.getElementById('user-input').focus();
+	},
+	updated: function() {
+		// roll down to the latest message
+		if (result.clientHeight < result.scrollHeight) {
+			result.scrollTo({
+				top: result.scrollHeight,
+				left: 0,
+				behavior: 'smooth'
+			})
+		}
 	}
 }).mount("#main");

@@ -46,16 +46,18 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 	export const presence_penalty = 2;
 	```
 	- **system**: Edit the `content` to tell the AI what should do.
-	- **logit_bias**: Use this field to maake AI output more or less of certain tokens. The key must be a non-negative number representing a token, and the value should be between -100 and 100. Higher value make the AI use the token more frequently. Tokens can be found using [the tokenizer](https://platform.openai.com/tokenizer).
+	- **logit_bias**: Use this field to maake AI output more or less of certain tokens. The key must be a non-negative number representing a token, and the value should be between -100 and 100. Higher value make the AI use the token more frequently. Tokens of GPT-3 can be found using [the tokenizer](https://platform.openai.com/tokenizer) and may be they can be used in GPT-3.5.
 	- For More information on other parameters, see [official documentation](https://platform.openai.com/docs/api-reference/chat).
 
 ## Usage
 1. Open the URL (such as `localhost:80`) of your service in a web browser.
-2. Input some text in the textarea in the upper left conner.
-3. Click on submit.
-4. If the request gets a proper response, the browser will alert `OK`, and the content from the AI will be appended under the textarea.
-5. If the request gets an error, the browser will alert `Error: status - status text`.
-6. You can submit the next message whether the last one got `OK` or not. If the last message got `OK`, both the user input and the AI's response will be appended to the messages. Otherwise, the last user input will be delete.
+2. Select a mod and click on `Confirm` button. There will be an alert to let you know the mod is loaded.
+3. Input some text in the `User Input` textarea.
+4. Click on submit.
+5. If the request gets a proper response, the browser will alert `OK`, and the content from the AI will be appended under the textarea.
+6. If the request gets an error, the browser will alert `Error: status - status text` or `Error` if can not get the HTTP status.
+7. You can submit the next message whether the last one got `OK` or not. If the last message got `OK`, both the user input and the AI's response will be appended to the messages. Otherwise, the last user input will be delete.
+8. You can change the mod at any time, but the messages will be cleared while you click the `Confirm` button.
 
 ## Contributing
 You can report bugs or make feature requests through the issue, or fork the project and make your own version.

@@ -6,9 +6,12 @@ html {
 
 body {
 	font-size: 1rem;
-	font-family: serif;
 	overflow: hidden;
 	height: 100%;
+}
+
+body, .txt {	
+	font-family: serif;
 }
 
 #main {
@@ -19,6 +22,33 @@ body {
 	display: flex;
 	flex-direction: column;
 	margin: 0 auto;
+}
+
+.mods {
+	width: auto;
+	text-transform: uppercase;
+	border-radius: 0.2rem;
+	font-size: 1rem;
+	padding: 0.15rem 0.25rem 0.15rem 0.25rem;
+	border: 0.15rem solid lightblue;
+	background: lightblue;
+	color: #333333;
+}
+.mods:focus {
+	border: 0.15rem solid SteelBlue;
+}
+.mods:disabled {
+	color: gray;
+}
+
+.mods-opt {
+	text-transform: uppercase;
+	background: SteelBlue;
+	color: white;
+}
+
+.right {
+	float: right;
 }
 
 .input-area {
@@ -52,12 +82,15 @@ body {
 .btn {
 	background: SteelBlue;
 	color: white;
-	display: block;
 	border:none;
 	border-radius: 0.2rem;
 	font-size: 1rem;
-	padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+	padding: 0.3rem 0.5rem 0.2rem 0.5rem;
 	cursor: pointer;
+}
+
+#yes {	
+	display: block;
 }
 
 .btn:hover {
