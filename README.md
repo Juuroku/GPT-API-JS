@@ -8,10 +8,10 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
    - [Contributing](#Contributing)
 
 ## Installation
-	1. Clone the project to your host.
-	2. The project uses `import` method in JavaScript, which requires a web server to function properly. Therefore, it is required to install and configure a web server such as Nginx to run the project.
-	3. Assign the directory of the project as the root directory of the web.
-	4. Start the web server and configure it to listen on a port. Then the project will be accessible at the port on your host such as `localhost:80`.
+1. Clone the project to your host.
+2. The project uses `import` method in JavaScript, which requires a web server to function properly. Therefore, it is required to install and configure a web server such as Nginx to run the project.
+3. Assign the directory of the project as the root directory of the web.
+4. Start the web server and configure it to listen on a port. Then the project will be accessible at the port on your host such as `localhost:80`.
 	
 ## Configure
 
