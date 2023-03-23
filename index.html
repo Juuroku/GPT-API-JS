@@ -3,12 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<title> GPT API Test </title>
+	<link rel="stylesheet" type="text/css" href="CSS/style.css">
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-	<div>
-		<textarea id="user-input"></textarea>
-		<button type="button" id="yes">Submit</button>
-		<div id="result">
+	<div id="main">
+		<div class="input-area">
+			<label for="user-input" class="msg-label">User Input:</label>
+			<textarea id="user-input" class="msg" @keydown.enter.exact.prevent="gpt_api($event)" @keydown.enter.shift.exact="" ></textarea>
+			<button type="button" id="yes" @click="gpt_api($event)" class="btn">Submit</button>
+		</div>
+		<div id="result" class="container">
+			<div v-for="item in comments">
+				<p class="role">{{ item.role }}:</p>
+				<pre class="content">{{ item.content }}</pre>
+			</div>
 		</div>
 	</div>
 	<script src="JS/gpt.js" type="module"></script>
