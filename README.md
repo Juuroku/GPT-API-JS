@@ -10,6 +10,11 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 ## Installation
 1. Clone the project to your host.
 2. The project uses `import` method in JavaScript, which requires a web server to function properly. Therefore, it is required to install and configure a web server such as Nginx to run the project.
+	- If using WSL in Windows, and willing to connect from other devices, here is a command for binding the port:
+		```
+		netsh interface portproxy add v4tov4 listenport=<port to connect from outside> listenaddress=<ip from outside like 0.0.0.0> connectport=<port listening on WSL> connectaddress=<WSL IP like 172.20.x.x>
+		```
+		Also do not forget to adjust the inbound rule in Windows Defender Firewall.
 3. Assign the directory of the project as the root directory of the web.
 4. Start the web server and configure it to listen on a port. Then the project will be accessible at the port on your host such as `localhost:80`.
 	
