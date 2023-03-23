@@ -1,1 +1,3 @@
-export const mod_path = '/JS/modules/ics.js';
+export const mod_paths = {
+	ics: '/JS/modules/ics.js'
+}
