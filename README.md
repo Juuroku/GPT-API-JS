@@ -56,15 +56,16 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 
 ## Usage
 1. Open the URL (such as `localhost:80`) of your service in a web browser.
-2. Select a mod and click on `Confirm` button. There will be an alert to let you know the mod is loaded.
+2. Select a mod and click on `Confirm` button. There will be an alert to let you know that the mod is loaded.
 3. Input some text in the `User Input` textarea.
-4. Click on submit.
+4. Click on submit or press `Enter` key (use `shift` + `Enter` to break the line).
 5. If the request gets a proper response, the browser will alert `OK`, and the content from the AI will be appended under the textarea.
 6. If the request gets an error, the browser will alert `Error: status - status text` or `Error` if can not get the HTTP status.
+	- You can also click on `Cancel` button while waiting for too long, and after the `Error` alert, you can submit again.
 7. You can submit the next message whether the last one got `OK` or not. If the last message got `OK`, both the user input and the AI's response will be appended to the messages. Otherwise, the last user input will be delete.
 8. You can change the mod at any time, but the messages will be cleared while you click the `Confirm` button.
 
 ## Contributing
-You can report bugs or make feature requests through the issue, or fork the project and make your own version.
-To report the bugs, please use the `bug` tag.
+You can report bugs or make feature requests through the issue, or fork the project and make your own version.  
+To report the bugs, please use the `bug` tag.  
 To request new feature, please use the `enhancement` tag.

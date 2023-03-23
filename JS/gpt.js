@@ -7,12 +7,7 @@ for (const key in mod_paths) {
 const { createApp } = Vue;
 
 let api_url = 'https://api.openai.com/v1/chat/completions';
-let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + key};
-let obj = {
-	"model": "gpt-3.5-turbo",
-	"messages": [],
-	"temperature": 0.5,
-}
+let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': `Bearer ${key}`};
 
 
 const reg = new RegExp('^\n');
@@ -20,11 +15,16 @@ const reg = new RegExp('^\n');
 const app = createApp({
 	data() {
 		return {
-			obj: obj,
+			obj: {
+				"model": "gpt-3.5-turbo",
+				"messages": [],
+				"temperature": 0.5,
+			},
 			mods: mods,
 			mod: null,
 			comments: [],
-			history: []
+			history: [],
+			ctrl: null
 		}
 	},
 	methods: {
@@ -84,10 +84,13 @@ const app = createApp({
 					this.$data.obj.messages.push({ "role": "user", "content": string});
 					console.log(this.$data.obj);
 					
+					document.getElementById('stop').disabled = null;
+					this.$data.ctrl = new AbortController();
 					fetch(api_url, {
 						headers: headers,
 						method: 'POST',
-						body: JSON.stringify(this.$data.obj)
+						body: JSON.stringify(this.$data.obj),
+						signal: this.$data.ctrl.signal
 					})
 						.then((res) => {
 							if (res.ok) {
@@ -115,6 +118,7 @@ const app = createApp({
 								} else {
 									alert ('Error');
 								}
+								document.getElementById('stop').disabled = 'disabled';
 								this.allEn();
 								this.$data.obj.messages.pop();
 							}
@@ -124,13 +128,18 @@ const app = createApp({
 							alert('Error');
 							this.allEn();
 							this.$data.obj.messages.pop();
+							document.getElementById('stop').disabled = 'disabled';
 						});
 				}
 			}
 			
 		},
+		stop_fetch: function() {
+			this.$data.ctrl.abort();
+			console.log("Cancel");
+			document.getElementById('stop').disabled = 'disabled';
+		},
 		allDis: function() {
-			console.log('dis');
 			let txar = document.getElementById('user-input');
 			mod_btn.disabled = true;
 			txar.disabled = true;
@@ -138,7 +147,6 @@ const app = createApp({
 			this.$refs.mods.disabled = 'disabled';
 		},
 		allEn: function() {
-			console.log('en');
 			let txar = document.getElementById('user-input');
 			txar.disabled = null;
 			txar.focus();
@@ -173,4 +181,5 @@ const app = createApp({
 			})
 		}
 	}
-}).mount("#main");
+});
+app.mount("#main");
