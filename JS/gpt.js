@@ -12,7 +12,7 @@ let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization
 
 const reg = new RegExp('^\n');
 
-const app = createApp({
+export const app = createApp({
 	data() {
 		return {
 			obj: {
@@ -93,8 +93,6 @@ const app = createApp({
 				alert('Select Mod!');
 			} else {
 				this.allDis();
-				e.preventDefault();
-				e.target.blur();
 				//let txar = document.getElementById('user-input');
 				let string = this.$data.user_input;
 				if (string === undefined || /^\s*$/.test(string)) {
@@ -124,12 +122,13 @@ const app = createApp({
 									alert('OK');
 									this.$data.user_input = "";
 									this.allEn();
-									yes.disabled = undefined;
+									document.getElementById('stop').disabled = 'disabled';
 								})
 								.catch((e) => {
 									alert('JSON parse error');
 									this.allEn();
 									this.$data.obj.messages.pop();
+									document.getElementById('stop').disabled = 'disabled';
 								});
 							} else {
 								console.log(res);
@@ -153,6 +152,15 @@ const app = createApp({
 				}
 			}
 			
+		},
+		enterHandle: function(e) {
+			console.log('key');
+			if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+				console.log('not');
+				e.preventDefault();
+				e.target.blur();
+				this.gpt_api(e);
+			}
 		},
 		stop_fetch: function() {
 			this.$data.ctrl.abort();
@@ -208,4 +216,7 @@ const app = createApp({
 		}
 	}
 });
-app.mount("#main");
+
+// pass instance to window to access from console
+window.vm = app.mount("#main");
+window.app = app;
