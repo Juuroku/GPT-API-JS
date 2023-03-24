@@ -4,16 +4,20 @@ html {
 	height: 100%;
 }
 
+/* margin 0 to prevent bottom cut */
 body {
 	font-size: 1rem;
 	overflow: hidden;
 	height: 100%;
+	margin: 0;
+	padding: 0.5rem;
 }
 
 body, .txt {	
 	font-family: serif;
 }
 
+/* main area align center, max width 80%*/
 #main {
 	width: fit-content;
 	max-width: 80%;
@@ -24,6 +28,7 @@ body, .txt {
 	margin: 0 auto;
 }
 
+/* layout of input area */
 .input-area {
 	padding: 0.5rem;
 	flex-shrink: 0;
@@ -31,11 +36,13 @@ body, .txt {
 .input-area > * {
 	margin: 0.2rem;
 }
+.input-area > div {
+	padding-bottom: 0.5rem;
+}
 
 .input-group {
 	margin: 0;
 	height: fit-content;
-	overflow: hidden;
 }
 
 .input-group.flex {
@@ -44,10 +51,7 @@ body, .txt {
 	align-items: center;
 }
 
-label {
-	margin-right: 0.2rem;
-}
-
+/* mod label, select, button */
 .mods-label {
 	flex-basis: auto;
 }
@@ -78,7 +82,7 @@ label {
 }
 
 .middle {
-	margin-right: 0.2rem;
+	margin: 0 0.5rem;
 	flex-basis: auto;
 	flex-shrink: 2;
 	flex-grow: 2;
@@ -91,7 +95,7 @@ label {
 }
 
 
-
+/* user input label */
 .msg-label {
 	display: block;
 }
@@ -105,17 +109,23 @@ textarea {
 	box-sizing: border-box;
 	border-radius: 0.2rem;
 	border: 0.15rem inset SteelBlue;
-	width: 99.5%;
-	max-width: 99.5%;
+	width: 100%;
+	max-width: 100%;
 	max-height: 20rem;
 	padding: 0.5rem;
+	margin: 0.5rem auto;
 }
 
 .msg:disabled {
+	border: 0.15rem inset lightblue;
 	cursor: not-allowed;
 }
 
-/* submit button */
+/* submit and cancel button */
+.block {
+	display: block;
+}
+
 .btn {
 	background: SteelBlue;
 	color: white;
@@ -124,10 +134,6 @@ textarea {
 	font-size: 1rem;
 	padding: 0.3rem 0.5rem 0.2rem 0.5rem;
 	cursor: pointer;
-}
-
-.block {
-	display: block;
 }
 
 .btn:hover {
@@ -140,7 +146,7 @@ textarea {
 	cursor: not-allowed;
 }
 
-/* content display */
+/* content display with overflow scroll */
 .container {
 	padding: 0.5rem;
 	overflow: auto;
@@ -150,6 +156,7 @@ textarea {
 	width: auto;
 }
 
+/* underline with fit width */
 .role {
 	font-weight: bold;
 	color: SteelBlue;
@@ -158,6 +165,7 @@ textarea {
 	width: fit-content;
 }
 
+/* wrap */
 .container pre {
 	padding: 0.5rem;
 	border: 0.1rem solid #BBBBBB;

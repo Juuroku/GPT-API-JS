@@ -24,15 +24,33 @@ const app = createApp({
 			mod: null,
 			comments: [],
 			history: [],
-			ctrl: null
+			ctrl: null,
+			pre_mod: "",
+			mod_idx: "",
+			user_input: ""
 		}
 	},
 	methods: {
 		changeMod: function() {
-			this.msgEn();
-			let sel = document.getElementById('mods').value;
+			if (this.$data.pre_mod != "") {
+				let flag = confirm('Clean the history?');
+				if (!flag) {
+					this.$data.mod_idx = this.$data.pre_mod;
+					if (this.$data.obj.pre_mod != '') this.msgEn();
+					return;
+				}
+			}
+			this.msgDis();
+			this.$data.obj = {
+				"model": "gpt-3.5-turbo",
+				"messages": [],
+				"temperature": 0.5,
+			};
+			let sel = this.$data.mod_idx;
 			if (!sel || sel == '') {
 				alert('No module selected!');
+				this.$data.mod_idx = this.$data.pre_mod;
+				if (this.$data.obj.pre_mod != '') this.msgEn();
 				return;
 			}
 			this.$data.history.push(this.$data.obj.messages);
@@ -60,9 +78,11 @@ const app = createApp({
 				if (mod.temperature) obj.temperature = mod.temperature;
 				
 				this.$data.obj = obj;
+				this.$data.pre_mod = this.$data.mod_idx;
 				this.msgEn();
 			} else {
 				alert('Can\'t find the module!');
+				this.$data.mod_idx = this.$data.pre_mod;
 				return;
 			}
 			console.log(this.$data.obj);
@@ -75,8 +95,8 @@ const app = createApp({
 				this.allDis();
 				e.preventDefault();
 				e.target.blur();
-				let txar = document.getElementById('user-input');
-				let string = txar.value;
+				//let txar = document.getElementById('user-input');
+				let string = this.$data.user_input;
 				if (string === undefined || /^\s*$/.test(string)) {
 					alert('No input!');
 					this.allEn();
@@ -102,7 +122,7 @@ const app = createApp({
 									this.$data.comments.push(this.$data.obj.messages[l-1]);
 									this.$data.comments.push(this.$data.obj.messages[l]);
 									alert('OK');
-									txar.value = "";
+									this.$data.user_input = "";
 									this.allEn();
 									yes.disabled = undefined;
 								})
@@ -164,6 +184,12 @@ const app = createApp({
 			txar.disabled = null;
 			txar.focus();
 			yes.disabled = undefined;
+		},
+		msgDis: function() {
+			let txar = document.getElementById('user-input');
+			txar.disabled = 'disabled';
+			txar.focus();
+			yes.disabled = 'disabled';
 		},
 		add_input: function() {
 			
