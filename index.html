@@ -21,14 +21,15 @@
 			</div>
 			<div class="input-group">
 				<label for="user-input" class="msg-label">User Input:</label>
-				<textarea id="user-input" class="msg" @keydown.enter.exact="enterHandle($event)" @keydown.enter.shift.exact="" v-model="user_input" disabled></textarea>
+				<textarea id="user-input" class="msg" @keydown.enter.exact="enterHandle($event)" @keydown.enter.shift.exact="" v-model="user_input" ref="txar" disabled></textarea>
 				<div class="block">
 					<button type="button" id="yes" @click="gpt_api($event)" class="btn txt" disabled>Submit</button>
-					<button type="button" id="stop" @click="stop_fetch" class="btn right txt" disabled> Cancel </button>
+					<button type="button" id="stop" @click="stop_fetch" class="btn right txt" ref="stop" disabled> Cancel </button>
 				</div>
 			</div>
 		</div>
-		<div id="result" class="container">
+		<div id="result" class="container" ref="result">
+			<div v-if="!comments.length" class="placeholder">The result will come here!</div>
 			<div v-for="item in comments">
 				<p class="role">{{ item.role }}:</p>
 				<pre class="content">{{ item.content }}</pre>

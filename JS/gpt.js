@@ -4,7 +4,7 @@ let mods = {};
 for (const key in mod_paths) {
 	mods[key] = await import(mod_paths[key]);
 }
-const { createApp } = Vue;
+const { createApp, nextTick } = Vue;
 
 let api_url = 'https://api.openai.com/v1/chat/completions';
 let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': `Bearer ${key}`};
@@ -38,6 +38,8 @@ export const app = createApp({
 					this.$data.mod_idx = this.$data.pre_mod;
 					if (this.$data.obj.pre_mod != '') this.msgEn();
 					return;
+				} else {
+					this.$data.history.push({mod: this.$data.pre_mod, messages: this.$data.obj.messages});
 				}
 			}
 			this.msgDis();
@@ -53,7 +55,6 @@ export const app = createApp({
 				if (this.$data.obj.pre_mod != '') this.msgEn();
 				return;
 			}
-			this.$data.history.push(this.$data.obj.messages);
 			this.$data.comments = [];
 			
 			console.log(sel);
@@ -93,7 +94,7 @@ export const app = createApp({
 				alert('Select Mod!');
 			} else {
 				this.allDis();
-				//let txar = document.getElementById('user-input');
+				//let txar = this.$refs.txar
 				let string = this.$data.user_input;
 				if (string === undefined || /^\s*$/.test(string)) {
 					alert('No input!');
@@ -102,7 +103,7 @@ export const app = createApp({
 					this.$data.obj.messages.push({ "role": "user", "content": string});
 					console.log(this.$data.obj);
 					
-					document.getElementById('stop').disabled = null;
+					this.$refs.stop.disabled = null;
 					this.$data.ctrl = new AbortController();
 					fetch(api_url, {
 						headers: headers,
@@ -122,13 +123,13 @@ export const app = createApp({
 									alert('OK');
 									this.$data.user_input = "";
 									this.allEn();
-									document.getElementById('stop').disabled = 'disabled';
+									this.$refs.stop.disabled = 'disabled';
 								})
 								.catch((e) => {
 									alert('JSON parse error');
 									this.allEn();
 									this.$data.obj.messages.pop();
-									document.getElementById('stop').disabled = 'disabled';
+									this.$refs.stop.disabled = 'disabled';
 								});
 							} else {
 								console.log(res);
@@ -137,7 +138,7 @@ export const app = createApp({
 								} else {
 									alert ('Error');
 								}
-								document.getElementById('stop').disabled = 'disabled';
+								this.$refs.stop.disabled = 'disabled';
 								this.allEn();
 								this.$data.obj.messages.pop();
 							}
@@ -147,7 +148,7 @@ export const app = createApp({
 							alert('Error');
 							this.allEn();
 							this.$data.obj.messages.pop();
-							document.getElementById('stop').disabled = 'disabled';
+							this.$refs.stop.disabled = 'disabled';
 						});
 				}
 			}
@@ -165,17 +166,17 @@ export const app = createApp({
 		stop_fetch: function() {
 			this.$data.ctrl.abort();
 			console.log("Cancel");
-			document.getElementById('stop').disabled = 'disabled';
+			this.$refs.stop.disabled = 'disabled';
 		},
 		allDis: function() {
-			let txar = document.getElementById('user-input');
+			let txar = this.$refs.txar;
 			mod_btn.disabled = true;
 			txar.disabled = true;
 			yes.disabled = 'disabled';
 			this.$refs.mods.disabled = 'disabled';
 		},
 		allEn: function() {
-			let txar = document.getElementById('user-input');
+			let txar = this.$refs.txar;
 			txar.disabled = null;
 			txar.focus();
 			yes.disabled = undefined;
@@ -183,18 +184,18 @@ export const app = createApp({
 			this.$refs.mods.disabled = null;
 		},
 		msgDis: function() {
-			let txar = document.getElementById('user-input');
+			let txar = this.$refs.txar;
 			txar.disabled = true;
 			yes.disabled = 'disabled';
 		},
 		msgEn: function() {
-			let txar = document.getElementById('user-input');
+			let txar = this.$refs.txar;
 			txar.disabled = null;
 			txar.focus();
 			yes.disabled = undefined;
 		},
 		msgDis: function() {
-			let txar = document.getElementById('user-input');
+			let txar = this.$refs.txar
 			txar.disabled = 'disabled';
 			txar.focus();
 			yes.disabled = 'disabled';
@@ -206,13 +207,27 @@ export const app = createApp({
 	mounted: function() {
 	},
 	updated: function() {
-		// roll down to the latest message
-		if (result.clientHeight < result.scrollHeight) {
-			result.scrollTo({
-				top: result.scrollHeight,
-				left: 0,
-				behavior: 'smooth'
-			})
+	},
+	watch:{
+		"comments.length": {
+			async handler(val) {
+				// watch the updating of comments
+
+				let result = this.$refs.result;
+				if (!result) return;
+
+				// wait untill dom updated 
+				await nextTick();
+				// roll down to the latest message
+				if (result.clientHeight < result.scrollHeight) {
+					result.scrollTo({
+						top: result.scrollHeight,
+						left: 0,
+						behavior: 'smooth'
+					})
+				}
+			},
+			immediate: true
 		}
 	}
 });

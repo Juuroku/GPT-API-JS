@@ -4,13 +4,13 @@ html {
 	height: 100%;
 }
 
-/* margin 0 to prevent bottom cut */
+/* set margin and padding to 0 to prevent bottom cut */
 body {
 	font-size: 1rem;
 	overflow: hidden;
 	height: 100%;
 	margin: 0;
-	padding: 0.5rem;
+	padding: 0;
 }
 
 body, .txt {	
@@ -30,7 +30,7 @@ body, .txt {
 
 /* layout of input area */
 .input-area {
-	padding: 0.5rem;
+	padding: 1rem;
 	flex-shrink: 0;
 }
 .input-area > * {
@@ -77,9 +77,16 @@ body, .txt {
 
 .mods-opt {
 	text-transform: uppercase;
-	background: SteelBlue;
-	color: white;
+	background: lightblue;
+	color: #444444;
 }
+.mods-opt:checked {
+	color: #333333;
+}
+.mods-opt:disabled {
+	color: #555555;
+}
+
 
 .middle {
 	margin: 0 0.5rem;
@@ -150,6 +157,7 @@ textarea {
 .container {
 	padding: 0.5rem;
 	overflow: auto;
+	margin: 0.5rem;
 }
 .container > * {
 	margin: 0.2rem;
@@ -170,4 +178,9 @@ textarea {
 	padding: 0.5rem;
 	border: 0.1rem solid #BBBBBB;
 	white-space: pre-wrap;
+}
+
+.placeholder {
+	text-align: center;
+	text-decoration: underline;
 }
