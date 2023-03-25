@@ -34,6 +34,7 @@
 				<p class="role">{{ item.role }}:</p>
 				<pre class="content">{{ item.content }}</pre>
 			</div>
+			<button id="scr" class="btn right-bottom txt" v-show="scr_show" @click="scroll_down"> To the bottom </button>
 		</div>
 	</div>
 	<script src="JS/gpt.js" type="module"></script>

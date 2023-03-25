@@ -27,7 +27,8 @@ export const app = createApp({
 			ctrl: null,
 			pre_mod: "",
 			mod_idx: "",
-			user_input: ""
+			user_input: "",
+			scr_show: false
 		}
 	},
 	methods: {
@@ -120,6 +121,8 @@ export const app = createApp({
 									this.$data.obj.messages.push(data.choices[0].message);
 									this.$data.comments.push(this.$data.obj.messages[l-1]);
 									this.$data.comments.push(this.$data.obj.messages[l]);
+									console.log('comp :', data.usage.completion_tokens);
+									console.log("total :", data.usage.total_tokens);
 									alert('OK');
 									this.$data.user_input = "";
 									this.allEn();
@@ -155,9 +158,7 @@ export const app = createApp({
 			
 		},
 		enterHandle: function(e) {
-			console.log('key');
 			if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-				console.log('not');
 				e.preventDefault();
 				e.target.blur();
 				this.gpt_api(e);
@@ -202,6 +203,14 @@ export const app = createApp({
 		},
 		add_input: function() {
 			
+		},
+		scroll_down: function() {
+			let result = this.$refs.result;
+			result.scrollTo({
+				top: result.scrollHeight,
+				left: 0,
+				behavior: 'smooth'
+			});
 		}
 	},
 	mounted: function() {
@@ -220,12 +229,13 @@ export const app = createApp({
 				await nextTick();
 				// roll down to the latest message
 				if (result.clientHeight < result.scrollHeight) {
+					this.scr_show = true;
 					result.scrollTo({
 						top: result.scrollHeight,
 						left: 0,
 						behavior: 'smooth'
-					})
-				}
+					});
+				} else this.scr_show = false;
 			},
 			immediate: true
 		}

@@ -19,13 +19,14 @@ body, .txt {
 
 /* main area align center, max width 80%*/
 #main {
-	width: fit-content;
+	/*width: fit-content;*/
 	max-width: 80%;
 	overflow: hidden;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	margin: 0 auto;
+	position: relative;
 }
 
 /* layout of input area */
@@ -183,4 +184,10 @@ textarea {
 .placeholder {
 	text-align: center;
 	text-decoration: underline;
+}
+
+.right-bottom {
+	position: absolute;
+	bottom: 1rem;
+	right: 2.5rem;
 }

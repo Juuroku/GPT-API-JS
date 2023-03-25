@@ -21,12 +21,12 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 ## Configure
 
 ### Set the key
-1. Edit [/JS/modules/key.js](/JS/modules/key.js).
-2. Change `OPENAI-API-KEY` to your own key.
+1. Oepn [/JS/modules/key.js](/JS/modules/key.js).
+2. Replace the text `OPENAI-API-KEY` to your own key.
 	
 ### Set the system
 1. Edit [/JS/config.js](/JS/config.js).
-2. Assign the paths of the module you want to use to `mod_paths` object as `"module_name": "module_path"`. You can also add your own module.
+2. Add the paths of the module you want to use to `mod_paths` object, following the format `"module_name": "module_path"`. You can also add your own module.
 	This is a template of a module with the supported parameters:
 	```JavaScript
 	export const system = {
@@ -68,4 +68,4 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 ## Contributing
 You can report bugs or make feature requests through the issue, or fork the project and make your own version.  
 To report the bugs, please use the `bug` tag.  
-To request new feature, please use the `enhancement` tag.
+To request new features, please use the `enhancement` tag.
