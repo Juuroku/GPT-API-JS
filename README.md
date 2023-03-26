@@ -1,5 +1,6 @@
 # GPT-3.5 API Web Interface
 This is a small project that using `GPT-3.5` API from [Open AI](https://openai.com/) to practice JavaScript, Vue.js and modules.
+The icon is modified from an SVG provided by ChatGPT.
 
 ## Table of Contents
    - [Installation](#Installation)
