@@ -46,6 +46,7 @@ This is a small project that using `GPT-3.5` API from [Open AI](https://openai.c
 	};
 
 	export const temperature = 0;
+	/* defualt to 0.5 in this project */
 
 	export const frequency_penalty = 2;
 	export const presence_penalty = 2;

@@ -1,9 +1,23 @@
 import {key} from '/JS/modules/key.js';
 import {mod_paths} from '/JS/config.js';
-let mods = {};
+let mods = {
+	"default GPT-3.5": {
+		system: null
+	}
+};
+let loading = [];
 for (const key in mod_paths) {
-	mods[key] = await import(mod_paths[key]);
+	try {
+		mods[key] = await import(mod_paths[key]);
+		if (!mods[key].system) {
+			loading.push(`${key.toUpperCase()} has no system configure!`);
+			delete mods[key];
+		}
+	} catch(e) {
+		loading.push(`${key.toUpperCase()} import failed!`);
+	}
 }
+if (loading.length) alert(loading.length + "mod(s) not loaded:\n" + loading.join("\n"));
 const { createApp, nextTick } = Vue;
 
 let api_url = 'https://api.openai.com/v1/chat/completions';
