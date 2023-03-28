@@ -1,10 +1,15 @@
+// load key and configure
 import {key} from '/JS/modules/key.js';
 import {mod_paths} from '/JS/config.js';
+
+// set default module
 let mods = {
 	"default GPT-3.5": {
 		system: null
 	}
 };
+
+// load modules
 let loading = [];
 for (const key in mod_paths) {
 	try {
@@ -14,17 +19,20 @@ for (const key in mod_paths) {
 			delete mods[key];
 		}
 	} catch(e) {
+		// add loading error message
 		loading.push(`${key.toUpperCase()} import failed!`);
 	}
 }
+
+// if error exists, alert
 if (loading.length) alert(loading.length + "mod(s) not loaded:\n" + loading.join("\n"));
+
+// import functinons from Vue
 const { createApp, nextTick } = Vue;
 
+// Open AI Api url and headers
 let api_url = 'https://api.openai.com/v1/chat/completions';
 let headers = {'Content-Type': 'application/json; charset=utf-8', 'Authorization': `Bearer ${key}`};
-
-
-const reg = new RegExp('^\n');
 
 export const app = createApp({
 	data() {
@@ -33,43 +41,46 @@ export const app = createApp({
 				"model": "gpt-3.5-turbo",
 				"messages": [],
 				"temperature": 0.5,
-			},
-			mods: mods,
-			mod: null,
-			comments: [],
-			history: [],
-			ctrl: null,
-			pre_mod: "",
-			mod_idx: "",
-			user_input: "",
-			scr_show: false
+			}, // main object post to api
+			mods: mods, // modules
+			mod: null, // selected module
+			comments: [], // display
+			history: [], // store past messages
+			ctrl: null, // AbortController to abort fetch 
+			pre_mod: "", // last selected module (index)
+			mod_idx: "", // selected module (index) (v-model)
+			user_input: "", // user input (v-model)
+			scr_show: false // show or hide 'To the bottom' button
 		}
 	},
 	methods: {
-		changeMod: function() {
+		change_mod: function() {
+			let sel = this.$data.mod_idx;
+			// check module
+			if (!sel || sel == '') {
+				alert('No module is selected!');
+				this.$data.mod_idx = this.$data.pre_mod;
+				return;
+			}
+			
+			// let user confirm to clear messages
 			if (this.$data.pre_mod != "") {
-				let flag = confirm('Clean the history?');
+				let flag = confirm('Clear the results?');
 				if (!flag) {
+					// set to previous if user cancel
 					this.$data.mod_idx = this.$data.pre_mod;
 					if (this.$data.obj.pre_mod != '') this.msgEn();
 					return;
 				} else {
+					// push messages to history
 					this.$data.history.push({mod: this.$data.pre_mod, messages: this.$data.obj.messages});
 				}
 			}
-			this.msgDis();
-			this.$data.obj = {
-				"model": "gpt-3.5-turbo",
-				"messages": [],
-				"temperature": 0.5,
-			};
-			let sel = this.$data.mod_idx;
-			if (!sel || sel == '') {
-				alert('No module selected!');
-				this.$data.mod_idx = this.$data.pre_mod;
-				if (this.$data.obj.pre_mod != '') this.msgEn();
-				return;
-			}
+			
+			// disable message input
+			this.msgDis();			
+			
+			// clear results
 			this.$data.comments = [];
 			
 			console.log(sel);
@@ -87,7 +98,8 @@ export const app = createApp({
 				
 				let mod = this.$data.mod;
 
-				if (mod.system) obj.messages.push(mod.system);
+				// biuld obj
+				obj.messages.push(mod.system);
 				if (mod.logit_bias) obj.logit_bias = mod.logit_bias;
 				if (mod.frequency_penalty) obj.frequency_penalty = mod.frequency_penalty;
 				if (mod.presence_penalty) obj.presence_penalty = mod.presence_penalty;
@@ -95,6 +107,8 @@ export const app = createApp({
 				
 				this.$data.obj = obj;
 				this.$data.pre_mod = this.$data.mod_idx;
+				
+				// enable message input
 				this.msgEn();
 			} else {
 				alert('Can\'t find the module!');
@@ -109,7 +123,6 @@ export const app = createApp({
 				alert('Select Mod!');
 			} else {
 				this.allDis();
-				//let txar = this.$refs.txar
 				let string = this.$data.user_input;
 				if (string === undefined || /^\s*$/.test(string)) {
 					alert('No input!');

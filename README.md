@@ -53,7 +53,7 @@ The icon is modified from an SVG provided by ChatGPT.
 	export const presence_penalty = 2;
 	```
 	- **system**: Edit the `content` to tell the AI what should do.
-	- **logit_bias**: Use this field to maake AI output more or less of certain tokens. The key must be a non-negative number representing a token, and the value should be between -100 and 100. Higher value make the AI use the token more frequently. Tokens of GPT-3 can be found using [the tokenizer](https://platform.openai.com/tokenizer) and may be they can be used in GPT-3.5.
+	- **logit_bias**: Use this field to maake AI output more or less of certain tokens. The key must be a non-negative number representing a token, and the value should be between -100 and 100. Higher value make the AI use the token more frequently. Tokens of GPT-3 can be found using [the tokenizer](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb) which is a Python package provided by Open AI.
 	- For More information on other parameters, see [official documentation](https://platform.openai.com/docs/api-reference/chat).
 
 ## Usage
